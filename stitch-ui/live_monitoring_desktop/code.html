@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Plant Monitoring - H2O Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#311400",
+                      "on-secondary-container": "#a7b6cc",
+                      "tertiary": "#ffb786",
+                      "outline": "#8c909f",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#005ac2",
+                      "inverse-surface": "#dae2fd",
+                      "on-tertiary-container": "#461f00",
+                      "outline-variant": "#424754",
+                      "on-surface": "#dae2fd",
+                      "surface-tint": "#adc6ff",
+                      "surface-container-low": "#131b2e",
+                      "surface-container-lowest": "#060e20",
+                      "secondary-fixed": "#d4e4fa",
+                      "background": "#0b1326",
+                      "primary-container": "#4d8eff",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "on-primary-fixed": "#001a42",
+                      "tertiary-fixed": "#ffdcc6",
+                      "secondary-container": "#39485a",
+                      "surface-bright": "#31394d",
+                      "on-error": "#690005",
+                      "on-tertiary": "#502400",
+                      "on-secondary": "#233143",
+                      "surface-container": "#171f33",
+                      "on-surface-variant": "#c2c6d6",
+                      "primary": "#adc6ff",
+                      "on-secondary-fixed-variant": "#39485a",
+                      "secondary-fixed-dim": "#b9c8de",
+                      "on-secondary-fixed": "#0d1c2d",
+                      "secondary": "#b9c8de",
+                      "on-primary-container": "#00285d",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-dim": "#0b1326",
+                      "inverse-on-surface": "#283044",
+                      "surface": "#0b1326",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-primary": "#002e6a",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#2d3449",
+                      "on-background": "#dae2fd",
+                      "primary-fixed": "#d8e2ff",
+                      "surface-variant": "#2d3449",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-container": "#df7412",
+                      "surface-container-high": "#222a3d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "stack-lg": "32px",
+                      "container-padding": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "display-metrics": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-metrics": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glow-active {
+            box-shadow: 0 0 12px rgba(173, 198, 255, 0.4);
+        }
+        .animate-pulse-border {
+            animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: rgba(255, 180, 171, 0.8); }
+        }
+        .data-flash {
+            animation: flash-bg 0.5s ease-out;
+        }
+        @keyframes flash-bg {
+            0% { background-color: rgba(173, 198, 255, 0.2); }
+            100% { background-color: transparent; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased h-screen overflow-hidden flex font-body-md">
+<!-- SideNavBar -->
+<nav class="fixed h-full w-[260px] left-0 top-0 bg-surface-container border-r border-outline-variant shadow-sm flex flex-col py-6 z-20">
+<div class="px-6 mb-8 flex flex-col gap-1">
+<div class="font-headline-md text-headline-md font-bold text-primary">H2O Control</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant">Plant 042 - Active</div>
+</div>
+<div class="flex-1 flex flex-col gap-1 px-2 font-label-sm text-label-sm">
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors duration-200 px-4 py-3 rounded-DEFAULT active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 0, 'wght' 400;">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 rounded-r-DEFAULT active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="sensors" style="font-variation-settings: 'FILL' 1, 'wght' 400;">sensors</span>
+                Live Monitoring
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors duration-200 px-4 py-3 rounded-DEFAULT active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="warning" style="font-variation-settings: 'FILL' 0, 'wght' 400;">warning</span>
+                Alerts
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors duration-200 px-4 py-3 rounded-DEFAULT active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 0, 'wght' 400;">history</span>
+                History
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors duration-200 px-4 py-3 rounded-DEFAULT active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring" style="font-variation-settings: 'FILL' 0, 'wght' 400;">monitoring</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors duration-200 px-4 py-3 rounded-DEFAULT active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 0, 'wght' 400;">settings</span>
+                Settings
+            </a>
+</div>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A macro photography shot of a sleek, futuristic industrial worker badge with a subtle metallic sheen. Dark metallic grays and deep blues dominate the color palette, matching the modern corporate high-tech control room aesthetic. Soft, directional light highlights the subtle textures of the badge surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA78jekvkmnBMqcunYncpKGygPBt8AGG8yVBi2WzNf2aBbAVgBVq1JSFCSrU6rtj7oz-U4exZfONOmgxo2oKdjLxW0DNZNWKZXTSKZPZn-A2XNqnwy2TKz-2N3d2JAMRwWhG1CHtIOZD8oogk9Tpxj9AtURru6R2HlQPK-TAoKsZBaYhpmImgF2fffTja3mKhI7vmKZZfeMvPKeovpk01PkzbxCTIkVAW97k4sqdPiJ45tLVYVhYI3P"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Operator 1</span>
+<span class="font-label-mono text-label-mono text-primary text-[10px]">AUTH_LVL_3</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-gutter ml-[260px] z-10">
+<div class="flex items-center gap-4">
+<div class="font-headline-sm text-headline-sm font-black text-on-surface">System Online</div>
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-full border border-outline-variant shadow-inner">
+<div class="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-[12px]">WSS_CONNECTED</span>
+</div>
+</div>
+<div class="flex items-center gap-2 text-primary font-label-mono text-label-mono">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-DEFAULT active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-DEFAULT active:opacity-80">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-DEFAULT active:opacity-80">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] mt-16 p-container-padding w-full h-[calc(100vh-64px)] overflow-y-auto bg-background">
+<div class="max-w-7xl mx-auto">
+<header class="mb-stack-lg flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Live Monitoring Area</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time telemetry from primary filtration circuits.</p>
+</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant flex gap-4">
+<span id="sys-time">2023-10-27 14:32:45 UTC</span>
+<span>UPDATES: LIVE</span>
+</div>
+</header>
+<!-- Sensor Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-md mb-stack-lg">
+<!-- Sensor 1: Nominal -->
+<div class="bg-[#1E293B] border-l-4 border-l-[#10B981] border border-[#334155] rounded-DEFAULT p-stack-md shadow-[0_1px_4px_rgba(0,0,0,0.15)] flex flex-col gap-stack-sm relative overflow-hidden group">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Flow Rate (IN)</span>
+<span class="material-symbols-outlined text-[#10B981]" data-icon="water_drop">water_drop</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface flex items-baseline gap-2">
+<span id="val-flow">1,420</span><span class="font-label-mono text-label-mono text-on-surface-variant">L/s</span>
+</div>
+<div class="h-8 w-full bg-surface-container-low rounded-sm mt-2 relative overflow-hidden">
+<!-- Simulated Sparkline -->
+<div class="absolute bottom-0 left-0 h-[60%] w-full border-t border-[#10B981] bg-gradient-to-t from-[#10B981]/20 to-transparent"></div>
+</div>
+</div>
+<!-- Sensor 2: Warning -->
+<div class="bg-[#1E293B] border-l-4 border-l-[#F59E0B] border border-[#334155] rounded-DEFAULT p-stack-md shadow-[0_1px_4px_rgba(0,0,0,0.15)] flex flex-col gap-stack-sm relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Turbidity (PRE)</span>
+<span class="material-symbols-outlined text-[#F59E0B]" data-icon="science">science</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface flex items-baseline gap-2">
+<span id="val-turb">4.8</span><span class="font-label-mono text-label-mono text-on-surface-variant">NTU</span>
+</div>
+<div class="h-8 w-full bg-surface-container-low rounded-sm mt-2 relative overflow-hidden">
+<div class="absolute bottom-0 left-0 h-[80%] w-full border-t border-[#F59E0B] bg-gradient-to-t from-[#F59E0B]/20 to-transparent"></div>
+</div>
+</div>
+<!-- Sensor 3: Nominal -->
+<div class="bg-[#1E293B] border-l-4 border-l-[#10B981] border border-[#334155] rounded-DEFAULT p-stack-md shadow-[0_1px_4px_rgba(0,0,0,0.15)] flex flex-col gap-stack-sm relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">pH Level</span>
+<span class="material-symbols-outlined text-[#10B981]" data-icon="device_thermostat">device_thermostat</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface flex items-baseline gap-2">
+<span id="val-ph">7.2</span><span class="font-label-mono text-label-mono text-on-surface-variant">pH</span>
+</div>
+<div class="h-8 w-full bg-surface-container-low rounded-sm mt-2 relative overflow-hidden">
+<div class="absolute bottom-0 left-0 h-[40%] w-full border-t border-[#10B981] bg-gradient-to-t from-[#10B981]/20 to-transparent"></div>
+</div>
+</div>
+<!-- Sensor 4: Critical -->
+<div class="bg-[#1E293B] border-l-4 border-l-error border border-error/50 rounded-DEFAULT p-stack-md shadow-[0_1px_4px_rgba(0,0,0,0.15)] flex flex-col gap-stack-sm relative overflow-hidden animate-pulse-border">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-error uppercase tracking-wider">Pressure (P1)</span>
+<span class="material-symbols-outlined text-error" data-icon="speed">speed</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-error flex items-baseline gap-2">
+<span id="val-pres">124</span><span class="font-label-mono text-label-mono text-error/70">PSI</span>
+</div>
+<div class="h-8 w-full bg-error-container/30 rounded-sm mt-2 relative overflow-hidden">
+<div class="absolute bottom-0 left-0 h-[95%] w-full border-t border-error bg-gradient-to-t from-error/20 to-transparent"></div>
+</div>
+</div>
+</div>
+<!-- Large Live Data Stream Chart Area -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-DEFAULT shadow-[0_1px_4px_rgba(0,0,0,0.15)] p-stack-md relative h-96 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Main Circuit Telemetry</h2>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container-high border border-outline-variant rounded font-label-mono text-label-mono text-on-surface hover:bg-surface-container-highest transition-colors">1H</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded font-label-mono text-label-mono glow-active transition-colors">LIVE</button>
+</div>
+</div>
+<!-- Chart Canvas Area (Placeholder for actual charting lib) -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant/50 rounded shadow-inner relative overflow-hidden flex items-end">
+<!-- Y-Axis Lines (Background) -->
+<div class="absolute inset-0 flex flex-col justify-between py-4 pointer-events-none">
+<div class="w-full border-t border-dashed border-[#334155] opacity-50"></div>
+<div class="w-full border-t border-dashed border-[#334155] opacity-50"></div>
+<div class="w-full border-t border-dashed border-[#334155] opacity-50"></div>
+<div class="w-full border-t border-dashed border-[#334155] opacity-50"></div>
+</div>
+<!-- Simulated Chart Data Line -->
+<svg class="w-full h-full absolute inset-0 preserve-3d" preserveaspectratio="none" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#adc6ff" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#adc6ff" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path class="chart-path" d="M0,150 L100,120 L200,140 L300,90 L400,110 L500,60 L600,80 L700,40 L800,100 L900,30 L1000,50" fill="none" stroke="#adc6ff" stroke-width="2"></path>
+<path d="M0,200 L0,150 L100,120 L200,140 L300,90 L400,110 L500,60 L600,80 L700,40 L800,100 L900,30 L1000,50 L1000,200 Z" fill="url(#chartGradient)"></path>
+</svg>
+<!-- Live Indicator overlay -->
+<div class="absolute right-4 top-4 flex items-center gap-2 bg-[#1E293B] border border-[#334155] px-2 py-1 rounded shadow-lg">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-mono text-label-mono text-primary text-[10px]">SYNCING</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simulate real-time data updates for industrial feel
+        function updateValue(id, baseValue, variance, isInt = false) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            setInterval(() => {
+                const change = (Math.random() * variance * 2) - variance;
+                let newVal = baseValue + change;
+                
+                if (isInt) {
+                    newVal = Math.round(newVal);
+                    // Add thousands separator for flow rate
+                    if(id === 'val-flow') newVal = newVal.toLocaleString();
+                } else {
+                    newVal = newVal.toFixed(1);
+                }
+                
+                el.innerText = newVal;
+                
+                // Trigger flash animation
+                el.parentElement.classList.remove('data-flash');
+                void el.parentElement.offsetWidth; // trigger reflow
+                el.parentElement.classList.add('data-flash');
+                
+            }, 2000 + Math.random() * 1500); // Random interval between 2s and 3.5s
+        }
+
+        // Initialize simulations
+        updateValue('val-flow', 1420, 15, true);
+        updateValue('val-turb', 4.8, 0.3, false);
+        updateValue('val-ph', 7.2, 0.1, false);
+        updateValue('val-pres', 124, 2, true);
+
+        // Update system time
+        setInterval(() => {
+            const timeEl = document.getElementById('sys-time');
+            if(timeEl) {
+                const now = new Date();
+                timeEl.innerText = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+            }
+        }, 1000);
+    </script>
+</body></html>

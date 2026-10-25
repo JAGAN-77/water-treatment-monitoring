@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>H2O Control - Historical Data</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#311400",
+                      "on-secondary-container": "#a7b6cc",
+                      "tertiary": "#ffb786",
+                      "outline": "#8c909f",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#005ac2",
+                      "inverse-surface": "#dae2fd",
+                      "on-tertiary-container": "#461f00",
+                      "outline-variant": "#424754",
+                      "on-surface": "#dae2fd",
+                      "surface-tint": "#adc6ff",
+                      "surface-container-low": "#131b2e",
+                      "surface-container-lowest": "#060e20",
+                      "secondary-fixed": "#d4e4fa",
+                      "background": "#0b1326",
+                      "primary-container": "#4d8eff",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "on-primary-fixed": "#001a42",
+                      "tertiary-fixed": "#ffdcc6",
+                      "secondary-container": "#39485a",
+                      "surface-bright": "#31394d",
+                      "on-error": "#690005",
+                      "on-tertiary": "#502400",
+                      "on-secondary": "#233143",
+                      "surface-container": "#171f33",
+                      "on-surface-variant": "#c2c6d6",
+                      "primary": "#adc6ff",
+                      "on-secondary-fixed-variant": "#39485a",
+                      "secondary-fixed-dim": "#b9c8de",
+                      "on-secondary-fixed": "#0d1c2d",
+                      "secondary": "#b9c8de",
+                      "on-primary-container": "#00285d",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-dim": "#0b1326",
+                      "inverse-on-surface": "#283044",
+                      "surface": "#0b1326",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-primary": "#002e6a",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#2d3449",
+                      "on-background": "#dae2fd",
+                      "primary-fixed": "#d8e2ff",
+                      "surface-variant": "#2d3449",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-container": "#df7412",
+                      "surface-container-high": "#222a3d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "stack-lg": "32px",
+                      "container-padding": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "display-metrics": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-metrics": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar -->
+<nav class="bg-surface-container dark:bg-surface-container fixed h-full w-[260px] left-0 top-0 border-r border-outline-variant shadow-sm z-50">
+<div class="flex flex-col h-full py-6">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">H2O Control</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Plant 042 - Active</p>
+</div>
+<div class="flex flex-col gap-2 px-2 flex-grow">
+<!-- Dashboard -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'wght' 300;">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<!-- Live Monitoring -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="sensors" style="font-variation-settings: 'wght' 300;">sensors</span>
+<span class="font-label-sm text-label-sm">Live Monitoring</span>
+</a>
+<!-- Alerts -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="warning" style="font-variation-settings: 'wght' 300;">warning</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<!-- History (Active) -->
+<a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 rounded-r-lg" href="#">
+<span class="material-symbols-outlined" data-icon="history" data-weight="fill" style="font-variation-settings: 'FILL' 1, 'wght' 300;">history</span>
+<span class="font-label-sm text-label-sm font-bold">History</span>
+</a>
+<!-- Analytics -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring" style="font-variation-settings: 'wght' 300;">monitoring</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 rounded-lg mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'wght' 300;">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</div>
+<div class="px-6 mt-6 flex items-center gap-3">
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small circular avatar image showing a professional headshot of an industrial plant operator wearing safety gear, set against a modern control room background with subtle blue lighting, matching the modern corporate high-tech UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKcwrgr8xXLIfbjcXpg8F573QqhCxh6wIsmNG6GglggxnkgH4v_fKhrGE-g_BWQGGXQnp1xJMOI-sbQ_f3W2Eu-Z6eQS6GMQzEsqHFNlW6KsDToJtu8FUb2BUtI6ma4cKRHGVLJz_-EH8dfRH0se86Hqg-wOIgssMB3BHOFzeYdDDpESw9-DktMn-c2pfIOs-NLQwLQUpg2ns9cKtR_Zts6IqKBWm9-L_niHFIg9Yt5qlDmWPf8IFe"/>
+</div>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface fixed top-0 right-0 w-[calc(100%-260px)] h-16 border-b border-outline-variant z-40">
+<div class="flex justify-between items-center px-gutter w-full h-full">
+<div class="flex items-center">
+<span class="font-headline-sm text-headline-sm font-black text-on-surface ml-4 tracking-tight">System Online</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant" style="font-variation-settings: 'wght' 300;">search</span>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface font-label-mono text-label-mono rounded-full pl-10 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64" placeholder="Search parameters..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors duration-200 rounded-full active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'wght' 300;">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors duration-200 rounded-full active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="schedule" style="font-variation-settings: 'wght' 300;">schedule</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors duration-200 rounded-full active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="account_circle" style="font-variation-settings: 'wght' 300;">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[260px] pt-16 p-container-padding min-h-screen">
+<!-- Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold">Historical Data Log</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Review and export sensor readings and system events.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex bg-surface-container-low rounded-lg p-1 border border-outline-variant">
+<button class="px-4 py-1.5 font-label-sm text-label-sm rounded-md bg-primary text-on-primary shadow-sm">Today</button>
+<button class="px-4 py-1.5 font-label-sm text-label-sm rounded-md text-on-surface-variant hover:text-on-surface">7 Days</button>
+<button class="px-4 py-1.5 font-label-sm text-label-sm rounded-md text-on-surface-variant hover:text-on-surface">30 Days</button>
+<button class="px-4 py-1.5 font-label-sm text-label-sm rounded-md text-on-surface-variant hover:text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span> Custom
+                    </button>
+</div>
+<button class="flex items-center gap-2 bg-surface-container border border-outline-variant px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span> Filters
+                </button>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-lg font-label-sm text-label-sm shadow-[0_0_12px_rgba(173,198,255,0.2)] hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span> Export CSV
+                </button>
+</div>
+</div>
+<!-- Data Grid -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.15)] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest border-b border-outline-variant shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)]">
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Timestamp</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">pH Level</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Temp (°C)</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Turbidity (NTU)</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tank Level (m)</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Flow (L/s)</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#334155]">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150">
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface whitespace-nowrap">2023-10-27 14:30:00</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">7.2</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">22.4</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">1.05</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">4.5</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">150.2</td>
+<td class="py-3 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Normal
+                                </span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150">
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface whitespace-nowrap">2023-10-27 14:15:00</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">7.3</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">22.5</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface text-tertiary">2.80</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">4.5</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">152.0</td>
+<td class="py-3 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary/10 border border-tertiary/20 text-tertiary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Warning
+                                </span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150">
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface whitespace-nowrap">2023-10-27 14:00:00</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface text-error">8.1</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">22.5</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">1.20</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">4.6</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">148.5</td>
+<td class="py-3 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error/10 border border-error/20 text-error font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span> Critical
+                                </span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150">
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface whitespace-nowrap">2023-10-27 13:45:00</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">7.1</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">22.3</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">0.95</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">4.4</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">151.1</td>
+<td class="py-3 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Normal
+                                </span>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low transition-colors duration-150">
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface whitespace-nowrap">2023-10-27 13:30:00</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">7.2</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">22.4</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">1.02</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">4.5</td>
+<td class="py-3 px-6 font-label-mono text-label-mono text-on-surface">149.8</td>
+<td class="py-3 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Normal
+                                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="bg-surface-container-lowest px-6 py-4 border-t border-outline-variant flex items-center justify-between">
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+                    Showing <span class="text-on-surface">1</span> to <span class="text-on-surface">25</span> of <span class="text-on-surface">2,482</span> entries
+                </div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-primary text-on-primary font-label-sm text-label-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm">3</button>
+<span class="text-on-surface-variant px-1">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-md hover:bg-surface-container text-on-surface-variant font-label-sm text-label-sm">99</button>
+</div>
+<button class="p-1.5 rounded-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

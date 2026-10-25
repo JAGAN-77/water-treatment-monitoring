@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>H2O Control - System Alerts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#311400",
+                        "on-secondary-container": "#a7b6cc",
+                        "tertiary": "#ffb786",
+                        "outline": "#8c909f",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#005ac2",
+                        "inverse-surface": "#dae2fd",
+                        "on-tertiary-container": "#461f00",
+                        "outline-variant": "#424754",
+                        "on-surface": "#dae2fd",
+                        "surface-tint": "#adc6ff",
+                        "surface-container-low": "#131b2e",
+                        "surface-container-lowest": "#060e20",
+                        "secondary-fixed": "#d4e4fa",
+                        "background": "#0b1326",
+                        "primary-container": "#4d8eff",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "on-primary-fixed": "#001a42",
+                        "tertiary-fixed": "#ffdcc6",
+                        "secondary-container": "#39485a",
+                        "surface-bright": "#31394d",
+                        "on-error": "#690005",
+                        "on-tertiary": "#502400",
+                        "on-secondary": "#233143",
+                        "surface-container": "#171f33",
+                        "on-surface-variant": "#c2c6d6",
+                        "primary": "#adc6ff",
+                        "on-secondary-fixed-variant": "#39485a",
+                        "secondary-fixed-dim": "#b9c8de",
+                        "on-secondary-fixed": "#0d1c2d",
+                        "secondary": "#b9c8de",
+                        "on-primary-container": "#00285d",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-dim": "#0b1326",
+                        "inverse-on-surface": "#283044",
+                        "surface": "#0b1326",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-primary": "#002e6a",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#2d3449",
+                        "on-background": "#dae2fd",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-variant": "#2d3449",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#df7412",
+                        "surface-container-high": "#222a3d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "container-padding": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-metrics": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-mono": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+        .icon-fill-1 {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+        .pulse-border {
+            animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(255, 180, 171, 1); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.4); }
+            50% { border-color: rgba(255, 180, 171, 0.3); box-shadow: 0 0 0 4px rgba(255, 180, 171, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden selection:bg-primary/30 selection:text-primary-fixed">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full py-6 fixed h-full w-[260px] left-0 top-0 bg-surface-container border-r border-outline-variant shadow-sm z-50">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-primary-container/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">H2O Control</h1>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px]">Plant 042 - Active</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 rounded hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 rounded hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-label-sm text-label-sm">Live Monitoring</span>
+</a>
+<a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 rounded-r hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined icon-fill-1" data-icon="warning">warning</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 rounded hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-sm text-label-sm">History</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 rounded hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+</div>
+<div class="px-2 mt-auto">
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 rounded hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="hidden md:flex justify-between items-center px-gutter w-full ml-[260px] bg-surface border-b border-outline-variant fixed top-0 right-0 w-[calc(100%-260px)] h-16 z-40">
+<div class="flex items-center gap-4">
+<span class="font-headline-sm text-headline-sm font-black text-on-surface text-lg">System Online</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative hidden lg:block mr-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="bg-surface-container-high border border-outline-variant rounded pl-9 pr-4 py-1.5 font-label-mono text-label-mono text-xs text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64 shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]" placeholder="Search parameters..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:opacity-80 transition-opacity relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button class="w-10 h-10 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</button>
+<button class="w-10 h-10 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:opacity-80 transition-opacity ml-2">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A close up, professional headshot portrait of an industrial plant operator in a hardhat, dramatic studio lighting against a dark grey background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9FyXoaBihI5T49lTK_tnCucFuAJnntC8nCVTiNeg4JVw3lY73kWIQBQxIaJ9n1UGko-QzPxfB0BJuH7uhYd_TfIZbH1ASaJv-wl0-W17A514nVXHzamE4C79Z9uJpI9uQR_Jm9S2WEfNM7v9ModNZreqbAh6wh43r7YmuBp937vGhB2wSkfbSCkxU9yHNKSCHxgBjqk45--nWR3JJr3yyVFX0T9fIvbcqcW1_smmrTkX_h5TaL9vo"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-container-padding md:ml-[260px] min-h-screen">
+<!-- Header & Tabs -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Alerts Management</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Monitor and resolve system anomalies.</p>
+</div>
+<div class="flex bg-surface-container-high rounded p-1 border border-outline-variant">
+<button class="px-6 py-2 rounded bg-surface-container-highest text-primary font-label-sm text-label-sm shadow-sm border border-outline-variant">Active Alerts (4)</button>
+<button class="px-6 py-2 rounded text-on-surface-variant hover:bg-surface-container-low font-label-sm text-label-sm transition-colors">Resolved Alerts</button>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-3 mb-stack-lg">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-error/50 bg-error/10 text-error font-label-sm text-label-sm hover:bg-error/20 transition-colors">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                Critical
+            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-tertiary-container/50 bg-tertiary-container/10 text-tertiary-container font-label-sm text-label-sm hover:bg-tertiary-container/20 transition-colors">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+                High
+            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container-high transition-colors opacity-60">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Medium
+            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-outline-variant bg-surface-container text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container-high transition-colors opacity-60">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+                Low
+            </button>
+<div class="ml-auto flex gap-2">
+<button class="px-3 py-1.5 rounded border border-outline-variant bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                    More Filters
+                </button>
+</div>
+</div>
+<!-- Alert Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-stack-md">
+<!-- Critical Alert Card -->
+<div class="bg-surface-container-low rounded-lg border border-error pulse-border p-stack-md flex flex-col relative overflow-hidden shadow-[0_4px_24px_rgba(255,180,171,0.05)]">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-error"></div>
+<div class="flex justify-between items-start mb-4 pl-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-error/20 flex items-center justify-center border border-error/30 text-error">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+</div>
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface text-base">Pressure Valve Failure</h3>
+<p class="font-label-mono text-label-mono text-error text-xs">ERR_VALVE_0X9A</p>
+</div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                        10:42:05 AM
+                    </span>
+</div>
+<div class="pl-2 flex-1 mb-6">
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Sudden pressure drop detected in Primary Filtration Unit B. Main valve unresponsive to automated recalibration commands.</p>
+<div class="grid grid-cols-2 gap-4 bg-surface-container-lowest p-3 rounded border border-outline-variant/50 shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)]">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px] uppercase mb-1">Current Pressure</p>
+<p class="font-headline-md text-headline-md text-error">12.4 <span class="text-sm text-on-surface-variant">PSI</span></p>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px] uppercase mb-1">Expected Range</p>
+<p class="font-headline-md text-headline-md text-on-surface">45.0 <span class="text-sm text-on-surface-variant">PSI</span></p>
+</div>
+</div>
+</div>
+<div class="pl-2 flex gap-3 mt-auto">
+<button class="flex-1 bg-error text-on-error font-label-sm text-label-sm py-2 px-4 rounded hover:bg-error/90 transition-colors shadow-[0_0_12px_rgba(255,180,171,0.3)]">Resolve Alert</button>
+<button class="flex-1 border border-outline-variant text-on-surface font-label-sm text-label-sm py-2 px-4 rounded hover:bg-surface-container-highest transition-colors">Acknowledge</button>
+</div>
+</div>
+<!-- High Alert Card -->
+<div class="bg-surface-container-low rounded-lg border border-outline-variant p-stack-md flex flex-col relative overflow-hidden shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-tertiary-container"></div>
+<div class="flex justify-between items-start mb-4 pl-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary-container/20 flex items-center justify-center border border-tertiary-container/30 text-tertiary-container">
+<span class="material-symbols-outlined text-sm" data-icon="science">science</span>
+</div>
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface text-base">Chemical Imbalance</h3>
+<p class="font-label-mono text-label-mono text-tertiary-container text-xs">WARN_PH_DEV</p>
+</div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                        09:15:22 AM
+                    </span>
+</div>
+<div class="pl-2 flex-1 mb-6">
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">pH levels in Secondary Tank C trending towards acidic threshold. Auto-dosing mechanism engaging slowly.</p>
+<div class="grid grid-cols-2 gap-4 bg-surface-container-lowest p-3 rounded border border-outline-variant/50 shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)]">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px] uppercase mb-1">Current pH</p>
+<p class="font-headline-md text-headline-md text-tertiary-container">6.2</p>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px] uppercase mb-1">Target</p>
+<p class="font-headline-md text-headline-md text-on-surface">7.4</p>
+</div>
+</div>
+</div>
+<div class="pl-2 flex gap-3 mt-auto">
+<button class="flex-1 bg-primary text-on-primary font-label-sm text-label-sm py-2 px-4 rounded hover:bg-primary/90 transition-colors shadow-[0_0_12px_rgba(173,198,255,0.2)]">Resolve Alert</button>
+<button class="flex-1 border border-outline-variant text-on-surface font-label-sm text-label-sm py-2 px-4 rounded hover:bg-surface-container-highest transition-colors">Acknowledge</button>
+</div>
+</div>
+<!-- High Alert Card 2 -->
+<div class="bg-surface-container-low rounded-lg border border-outline-variant p-stack-md flex flex-col relative overflow-hidden shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-tertiary-container"></div>
+<div class="flex justify-between items-start mb-4 pl-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary-container/20 flex items-center justify-center border border-tertiary-container/30 text-tertiary-container">
+<span class="material-symbols-outlined text-sm" data-icon="thermometer">thermometer</span>
+</div>
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface text-base">Cooling System Temp</h3>
+<p class="font-label-mono text-label-mono text-tertiary-container text-xs">WARN_TEMP_HIGH</p>
+</div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                        08:02:11 AM
+                    </span>
+</div>
+<div class="pl-2 flex-1 mb-6">
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Pump Room ambient temperature exceeding optimal range. Auxiliary fan array offline.</p>
+<div class="grid grid-cols-2 gap-4 bg-surface-container-lowest p-3 rounded border border-outline-variant/50 shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)]">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px] uppercase mb-1">Current Temp</p>
+<p class="font-headline-md text-headline-md text-tertiary-container">32°<span class="text-sm text-on-surface-variant">C</span></p>
+</div>
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant text-[10px] uppercase mb-1">Max Safe</p>
+<p class="font-headline-md text-headline-md text-on-surface">28°<span class="text-sm text-on-surface-variant">C</span></p>
+</div>
+</div>
+</div>
+<div class="pl-2 flex gap-3 mt-auto">
+<button class="flex-1 bg-primary text-on-primary font-label-sm text-label-sm py-2 px-4 rounded hover:bg-primary/90 transition-colors shadow-[0_0_12px_rgba(173,198,255,0.2)]">Resolve Alert</button>
+<button class="flex-1 border border-outline-variant text-on-surface font-label-sm text-label-sm py-2 px-4 rounded hover:bg-surface-container-highest transition-colors">Acknowledge</button>
+</div>
+</div>
+<!-- Critical Alert Card 2 (Acknowledged State Example) -->
+<div class="bg-surface-container-low rounded-lg border border-outline-variant p-stack-md flex flex-col relative overflow-hidden shadow-sm opacity-80">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-error"></div>
+<div class="absolute top-4 right-4 bg-surface-container-highest px-2 py-1 rounded text-on-surface-variant font-label-mono text-[10px] flex items-center gap-1 border border-outline-variant">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+                    ACKNOWLEDGED (user_jdoe)
+                </div>
+<div class="flex justify-between items-start mb-4 pl-2 mt-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-error/10 flex items-center justify-center border border-error/20 text-error/70">
+<span class="material-symbols-outlined text-sm" data-icon="power_off">power_off</span>
+</div>
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface text-base">Sensor Array Disconnect</h3>
+<p class="font-label-mono text-label-mono text-error/80 text-xs">ERR_COM_LOSS</p>
+</div>
+</div>
+</div>
+<div class="pl-2 flex-1 mb-6">
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Telemetry lost from Intake Sector 4. Last known status was stable. Investigation pending.</p>
+</div>
+<div class="pl-2 flex gap-3 mt-auto">
+<button class="flex-1 bg-primary text-on-primary font-label-sm text-label-sm py-2 px-4 rounded hover:bg-primary/90 transition-colors shadow-[0_0_12px_rgba(173,198,255,0.2)]">Resolve Alert</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

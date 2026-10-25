@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>H2O Control - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#311400",
+                      "on-secondary-container": "#a7b6cc",
+                      "tertiary": "#ffb786",
+                      "outline": "#8c909f",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#005ac2",
+                      "inverse-surface": "#dae2fd",
+                      "on-tertiary-container": "#461f00",
+                      "outline-variant": "#424754",
+                      "on-surface": "#dae2fd",
+                      "surface-tint": "#adc6ff",
+                      "surface-container-low": "#131b2e",
+                      "surface-container-lowest": "#060e20",
+                      "secondary-fixed": "#d4e4fa",
+                      "background": "#0b1326",
+                      "primary-container": "#4d8eff",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "on-primary-fixed": "#001a42",
+                      "tertiary-fixed": "#ffdcc6",
+                      "secondary-container": "#39485a",
+                      "surface-bright": "#31394d",
+                      "on-error": "#690005",
+                      "on-tertiary": "#502400",
+                      "on-secondary": "#233143",
+                      "surface-container": "#171f33",
+                      "on-surface-variant": "#c2c6d6",
+                      "primary": "#adc6ff",
+                      "on-secondary-fixed-variant": "#39485a",
+                      "secondary-fixed-dim": "#b9c8de",
+                      "on-secondary-fixed": "#0d1c2d",
+                      "secondary": "#b9c8de",
+                      "on-primary-container": "#00285d",
+                      "on-primary-fixed-variant": "#004395",
+                      "surface-dim": "#0b1326",
+                      "inverse-on-surface": "#283044",
+                      "surface": "#0b1326",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-primary": "#002e6a",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#2d3449",
+                      "on-background": "#dae2fd",
+                      "primary-fixed": "#d8e2ff",
+                      "surface-variant": "#2d3449",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-container": "#df7412",
+                      "surface-container-high": "#222a3d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "stack-lg": "32px",
+                      "container-padding": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "display-metrics": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-metrics": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar -->
+<nav class="fixed h-full w-[260px] left-0 top-0 bg-surface-container border-r border-outline-variant shadow-sm z-50">
+<div class="flex flex-col h-full py-6">
+<!-- Header/Brand -->
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">H2O Control</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Plant 042 - Active</p>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 flex flex-col gap-1 px-2">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 bg-primary/10 text-primary border-l-4 border-primary px-4 py-3 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<!-- Live Monitoring -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-label-sm text-label-sm">Live Monitoring</span>
+</a>
+<!-- Alerts -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<!-- History -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-sm text-label-sm">History</span>
+</a>
+<!-- Analytics -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high px-4 py-3 hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform duration-150 border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</div>
+<!-- Footer Avatar placeholder -->
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 bg-surface rounded hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm">Operator 1</p>
+<p class="font-label-mono text-label-mono text-[10px] text-on-surface-variant">Shift: A</p>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface border-b border-outline-variant z-40">
+<div class="flex justify-between items-center px-gutter w-full h-full">
+<!-- Brand/Product Name (Desktop only usually, but requested in JSON) -->
+<div class="font-headline-sm text-headline-sm font-black text-on-surface hidden lg:block">
+                System Online
+            </div>
+<!-- Search Bar -->
+<div class="flex-1 max-w-md mx-4 lg:mx-8">
+<div class="relative bg-surface-container-low rounded-lg border border-outline-variant/50 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-transparent border-none text-on-surface font-label-mono text-label-mono py-2 pl-10 pr-4 focus:ring-0 placeholder-on-surface-variant/50" placeholder="Search systems, alerts..." type="text"/>
+</div>
+</div>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[260px] mt-16 p-container-padding">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Dashboard Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time telemetrics and system status.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-tertiary-container animate-pulse"></div>
+<span class="font-label-mono text-label-mono text-on-surface">Plant Health: <span class="text-tertiary-container font-bold">92% Normal</span></span>
+</div>
+</div>
+</div>
+<!-- Sensor Cards Grid (5 Up) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-stack-md mb-stack-lg">
+<!-- Card 1: pH -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-lg p-stack-sm relative overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex flex-col h-32">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#10B981]"></div>
+<div class="pl-2 flex justify-between items-start mb-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">pH Level</span>
+<span class="material-symbols-outlined text-[16px] text-[#10B981]">check_circle</span>
+</div>
+<div class="pl-2 flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">7.2</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">pH</span>
+</div>
+<!-- Fake Sparkline -->
+<div class="h-8 w-full mt-2 relative overflow-hidden opacity-50">
+<svg class="w-full h-full stroke-[#10B981] fill-none stroke-[2px]" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,15 Q10,5 20,12 T40,10 T60,18 T80,8 T100,10"></path>
+</svg>
+</div>
+</div>
+<!-- Card 2: Temp -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-lg p-stack-sm relative overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex flex-col h-32">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container"></div>
+<div class="pl-2 flex justify-between items-start mb-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Temperature</span>
+<span class="material-symbols-outlined text-[16px] text-tertiary-container">warning</span>
+</div>
+<div class="pl-2 flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">24.5</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">°C</span>
+</div>
+<!-- Fake Sparkline -->
+<div class="h-8 w-full mt-2 relative overflow-hidden opacity-50">
+<svg class="w-full h-full stroke-tertiary-container fill-none stroke-[2px]" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,10 Q15,10 25,5 T50,15 T75,2 T100,8"></path>
+</svg>
+</div>
+</div>
+<!-- Card 3: Turbidity -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-lg p-stack-sm relative overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex flex-col h-32">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#10B981]"></div>
+<div class="pl-2 flex justify-between items-start mb-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Turbidity</span>
+<span class="material-symbols-outlined text-[16px] text-[#10B981]">check_circle</span>
+</div>
+<div class="pl-2 flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">1.2</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">NTU</span>
+</div>
+<!-- Fake Sparkline -->
+<div class="h-8 w-full mt-2 relative overflow-hidden opacity-50">
+<svg class="w-full h-full stroke-[#10B981] fill-none stroke-[2px]" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,18 Q20,18 30,15 T60,17 T80,14 T100,16"></path>
+</svg>
+</div>
+</div>
+<!-- Card 4: Level -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-lg p-stack-sm relative overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex flex-col h-32">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="pl-2 flex justify-between items-start mb-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tank Level</span>
+<span class="material-symbols-outlined text-[16px] text-primary">info</span>
+</div>
+<div class="pl-2 flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">85</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">%</span>
+</div>
+<!-- Fake Sparkline -->
+<div class="h-8 w-full mt-2 relative overflow-hidden opacity-50">
+<svg class="w-full h-full stroke-primary fill-none stroke-[2px]" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,20 L100,5"></path>
+</svg>
+</div>
+</div>
+<!-- Card 5: Flow Rate -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-lg p-stack-sm relative overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex flex-col h-32">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#10B981]"></div>
+<div class="pl-2 flex justify-between items-start mb-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Flow Rate</span>
+<span class="material-symbols-outlined text-[16px] text-[#10B981]">check_circle</span>
+</div>
+<div class="pl-2 flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">450</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">L/s</span>
+</div>
+<!-- Fake Sparkline -->
+<div class="h-8 w-full mt-2 relative overflow-hidden opacity-50">
+<svg class="w-full h-full stroke-[#10B981] fill-none stroke-[2px]" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,10 Q10,5 20,15 T40,5 T60,15 T80,5 T100,10"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Main Grid Layout (Chart + Side Panels) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-md">
+<!-- Main Chart Area -->
+<div class="lg:col-span-8 bg-[#1E293B] border border-[#334155] rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col">
+<div class="p-6 border-b border-[#334155] flex justify-between items-center bg-surface-container-lowest/50">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Live Sensor Trends</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-primary text-on-primary rounded font-label-sm text-label-sm shadow-[0_0_12px_rgba(77,142,255,0.4)]">1H</button>
+<button class="px-3 py-1 border border-outline-variant text-on-surface-variant rounded hover:bg-surface-container-high transition-colors font-label-sm text-label-sm">24H</button>
+</div>
+</div>
+<div class="p-6 flex-1 min-h-[400px] relative">
+<!-- Fake Chart Area simulating Recharts -->
+<!-- Grid Lines -->
+<div class="absolute inset-0 p-6 flex flex-col justify-between pointer-events-none opacity-20">
+<div class="w-full border-t border-dashed border-[#334155]"></div>
+<div class="w-full border-t border-dashed border-[#334155]"></div>
+<div class="w-full border-t border-dashed border-[#334155]"></div>
+<div class="w-full border-t border-dashed border-[#334155]"></div>
+<div class="w-full border-t border-dashed border-[#334155]"></div>
+</div>
+<!-- Chart Paths -->
+<svg class="w-full h-full preserveAspectRatio='none'" viewbox="0 0 800 350">
+<!-- Gradient Def -->
+<defs>
+<lineargradient id="primaryGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#adc6ff" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#adc6ff" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Area Fill -->
+<path d="M0,250 Q100,150 200,200 T400,100 T600,180 T800,80 L800,350 L0,350 Z" fill="url(#primaryGradient)"></path>
+<!-- Main Line -->
+<path d="M0,250 Q100,150 200,200 T400,100 T600,180 T800,80" fill="none" stroke="#adc6ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- Secondary Line (e.g. Turbidity) -->
+<path d="M0,300 Q150,280 250,310 T500,290 T700,320 T800,280" fill="none" stroke="#df7412" stroke-dasharray="4 4" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-2 left-6 right-6 flex justify-between text-on-surface-variant font-label-mono text-label-mono text-[10px]">
+<span>10:00</span>
+<span>10:15</span>
+<span>10:30</span>
+<span>10:45</span>
+<span>11:00</span>
+</div>
+</div>
+</div>
+<!-- Right Column Panels -->
+<div class="lg:col-span-4 flex flex-col gap-stack-md">
+<!-- Recent Alerts -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex-1 flex flex-col min-h-[250px]">
+<div class="p-4 border-b border-[#334155] flex justify-between items-center bg-surface-container-lowest/50">
+<h3 class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary-container">warning</span>
+                            Recent Alerts
+                        </h3>
+</div>
+<div class="p-4 flex flex-col gap-3 overflow-y-auto max-h-[300px]">
+<!-- Alert Item 1 -->
+<div class="bg-error-container/10 border border-error/20 rounded p-3 relative overflow-hidden group hover:bg-error-container/20 transition-colors cursor-pointer">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="pl-2">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm text-error font-bold">Temp High Anomaly</span>
+<span class="font-label-mono text-label-mono text-[10px] text-on-surface-variant">10:42:15</span>
+</div>
+<p class="font-body-md text-body-md text-sm text-on-surface-variant">Sensor T-04 reported 24.5°C, exceeding threshold by 2°C.</p>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="bg-surface-container border border-outline-variant/30 rounded p-3 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary-container"></div>
+<div class="pl-2">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm text-tertiary-container font-bold">Flow Rate Fluctuation</span>
+<span class="font-label-mono text-label-mono text-[10px] text-on-surface-variant">09:15:00</span>
+</div>
+<p class="font-body-md text-body-md text-sm text-on-surface-variant">Minor pressure drop detected in Main Valve B.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- System Activity -->
+<div class="bg-[#1E293B] border border-[#334155] rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.15)] flex-1 flex flex-col min-h-[250px]">
+<div class="p-4 border-b border-[#334155] flex justify-between items-center bg-surface-container-lowest/50">
+<h3 class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">terminal</span>
+                            System Activity
+                        </h3>
+</div>
+<div class="p-4 bg-surface-container-lowest/80 flex-1 font-label-mono text-label-mono text-[12px] text-on-surface-variant overflow-y-auto max-h-[300px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+<div class="mb-2"><span class="text-primary">[10:55:01]</span> CMD: Syncing telemetry node 4... OK</div>
+<div class="mb-2"><span class="text-primary">[10:54:12]</span> SYS: Filter backwash cycle completed.</div>
+<div class="mb-2"><span class="text-tertiary-container">[10:50:33]</span> WRN: Minor packet loss on secondary comms link. Retrying...</div>
+<div class="mb-2"><span class="text-primary">[10:45:00]</span> SYS: Automated chemical dosage adjusted (pH buff).</div>
+<div class="mb-2"><span class="text-primary">[10:30:00]</span> USR: Operator 1 logged in from terminal A.</div>
+<div class="mb-2 opacity-50"><span class="text-primary">[10:15:00]</span> SYS: Routine diagnostic scan... Clean.</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
